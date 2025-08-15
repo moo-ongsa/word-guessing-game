@@ -23,47 +23,92 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF2C3E50),
+            seedColor: const Color(0xFFE8B4B8), // Soft dusty rose
             brightness: Brightness.light,
-            background: Colors.white,
-            surface: Colors.white,
-            primary: const Color(0xFF2C3E50),
-            secondary: const Color(0xFF34495E),
-            onBackground: const Color(0xFF2C3E50),
-            onSurface: const Color(0xFF2C3E50),
+            background: const Color(0xFFFDF6F0), // Warm cream
+            surface: const Color(0xFFFDF6F0),
+            primary: const Color(0xFFE8B4B8), // Soft dusty rose
+            secondary: const Color(0xFFD4A5A5), // Muted rose
+            tertiary: const Color(0xFFE6D3A3), // Warm beige
+            onBackground: const Color(0xFF8B7D7B), // Warm gray
+            onSurface: const Color(0xFF8B7D7B),
           ),
           useMaterial3: true,
-          textTheme: GoogleFonts.poppinsTextTheme(),
-          scaffoldBackgroundColor: Colors.white,
+          textTheme: GoogleFonts.interTextTheme().copyWith(
+            displayLarge: GoogleFonts.inter(
+              fontSize: 32,
+              fontWeight: FontWeight.w300,
+              color: const Color(0xFF8B7D7B),
+            ),
+            displayMedium: GoogleFonts.inter(
+              fontSize: 24,
+              fontWeight: FontWeight.w300,
+              color: const Color(0xFF8B7D7B),
+            ),
+            displaySmall: GoogleFonts.inter(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xFF8B7D7B),
+            ),
+            bodyLarge: GoogleFonts.inter(
+              fontSize: 16,
+              fontWeight: FontWeight.w300,
+              color: const Color(0xFF8B7D7B),
+            ),
+            bodyMedium: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w300,
+              color: const Color(0xFF8B7D7B),
+            ),
+          ),
+          scaffoldBackgroundColor: const Color(0xFFFDF6F0),
           appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
-            foregroundColor: Color(0xFF2C3E50),
+            backgroundColor: Color(0xFFFDF6F0),
+            foregroundColor: Color(0xFF8B7D7B),
             elevation: 0,
+            centerTitle: true,
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF2C3E50),
-              foregroundColor: Colors.white,
+              backgroundColor: const Color(0xFFE8B4B8).withOpacity(0.8),
+              foregroundColor: const Color(0xFF8B7D7B),
               elevation: 0,
+              shadowColor: Colors.transparent,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
               ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
           ),
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
-            fillColor: const Color(0xFFF8F9FA),
+            fillColor: Colors.white.withOpacity(0.6),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF2C3E50), width: 2),
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide(
+                color: const Color(0xFFE8B4B8).withOpacity(0.5),
+                width: 1,
+              ),
             ),
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: 20,
               vertical: 16,
+            ),
+            hintStyle: GoogleFonts.inter(
+              color: const Color(0xFFB8A9A7),
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          cardTheme: CardThemeData(
+            color: Colors.white.withOpacity(0.7),
+            elevation: 0,
+            shadowColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
           ),
         ),

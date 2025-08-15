@@ -67,108 +67,281 @@ class _StatsScreenState extends State<StatsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFFF8F0),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2C3E50),
+        backgroundColor: const Color(0xFFFF6B9D),
         foregroundColor: Colors.white,
+        elevation: 0,
         title: Text(
           '📊 สถิติการเล่น',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+          style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
         ),
         actions: [
-          IconButton(onPressed: _loadStats, icon: const Icon(Icons.refresh)),
-          PopupMenuButton<String>(
-            onSelected: (value) async {
-              if (value == 'clear') {
-                final confirmed = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('ยืนยันการลบ'),
-                    content: const Text(
-                      'คุณต้องการลบสถิติทั้งหมดหรือไม่? การดำเนินการนี้ไม่สามารถยกเลิกได้',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: const Text('ยกเลิก'),
+          Container(
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: IconButton(
+              onPressed: _loadStats,
+              icon: const Icon(Icons.refresh, color: Colors.white),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert, color: Colors.white),
+              onSelected: (value) async {
+                if (value == 'clear') {
+                  final confirmed = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: const Text('ลบ'),
+                      title: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFF6B9D).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.delete_forever,
+                              color: Color(0xFFFF6B9D),
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'ยืนยันการลบ',
+                            style: GoogleFonts.nunito(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF8B5A96),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-
-                if (confirmed == true) {
-                  await _statsService.clearAllStats();
-                  _loadStats();
-                }
-              } else if (value == 'clear_players') {
-                final confirmed = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('ยืนยันการลบ'),
-                    content: const Text(
-                      'คุณต้องการลบรายชื่อผู้เล่นที่บันทึกไว้ทั้งหมดหรือไม่?',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: const Text('ยกเลิก'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: const Text('ลบ'),
-                      ),
-                    ],
-                  ),
-                );
-
-                if (confirmed == true) {
-                  // ลบรายชื่อผู้เล่นที่บันทึกไว้
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.remove('saved_players');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
                       content: Text(
-                        'ลบรายชื่อผู้เล่นแล้ว',
-                        style: GoogleFonts.poppins(),
+                        'คุณต้องการลบสถิติทั้งหมดหรือไม่? การดำเนินการนี้ไม่สามารถยกเลิกได้',
+                        style: GoogleFonts.nunito(
+                          fontSize: 16,
+                          color: const Color(0xFF8B5A96),
+                        ),
                       ),
-                      backgroundColor: const Color(0xFF27AE60),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: Text(
+                            'ยกเลิก',
+                            style: GoogleFonts.nunito(
+                              fontSize: 16,
+                              color: const Color(0xFFB8A9C9),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: Text(
+                              'ลบ',
+                              style: GoogleFonts.nunito(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   );
+
+                  if (confirmed == true) {
+                    await _statsService.clearAllStats();
+                    _loadStats();
+                  }
+                } else if (value == 'clear_players') {
+                  final confirmed = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      title: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFD93D).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.people_outline,
+                              color: Color(0xFFFFD93D),
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'ยืนยันการลบ',
+                            style: GoogleFonts.nunito(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF8B5A96),
+                            ),
+                          ),
+                        ],
+                      ),
+                      content: Text(
+                        'คุณต้องการลบรายชื่อผู้เล่นที่บันทึกไว้ทั้งหมดหรือไม่?',
+                        style: GoogleFonts.nunito(
+                          fontSize: 16,
+                          color: const Color(0xFF8B5A96),
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: Text(
+                            'ยกเลิก',
+                            style: GoogleFonts.nunito(
+                              fontSize: 16,
+                              color: const Color(0xFFB8A9C9),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFFFFD93D), Color(0xFFFFE5A3)],
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: Text(
+                              'ลบ',
+                              style: GoogleFonts.nunito(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+
+                  if (confirmed == true) {
+                    // ลบรายชื่อผู้เล่นที่บันทึกไว้
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.remove('saved_players');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'ลบรายชื่อผู้เล่นแล้ว',
+                          style: GoogleFonts.nunito(),
+                        ),
+                        backgroundColor: const Color(0xFF6C5CE7),
+                      ),
+                    );
+                  }
                 }
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'clear_players',
-                child: Row(
-                  children: [
-                    Icon(Icons.people_outline, color: Colors.orange),
-                    SizedBox(width: 8),
-                    Text('ลบรายชื่อผู้เล่น'),
-                  ],
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'clear_players',
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFD93D).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.people_outline,
+                          color: Color(0xFFFFD93D),
+                          size: 16,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'ลบรายชื่อผู้เล่น',
+                        style: GoogleFonts.nunito(
+                          color: const Color(0xFF8B5A96),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const PopupMenuItem(
-                value: 'clear',
-                child: Row(
-                  children: [
-                    Icon(Icons.delete_forever, color: Colors.red),
-                    SizedBox(width: 8),
-                    Text('ลบสถิติทั้งหมด'),
-                  ],
+                PopupMenuItem(
+                  value: 'clear',
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFF6B9D).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.delete_forever,
+                          color: Color(0xFFFF6B9D),
+                          size: 16,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'ลบสถิติทั้งหมด',
+                        style: GoogleFonts.nunito(
+                          color: const Color(0xFF8B5A96),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,
-          labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+          indicatorWeight: 3,
+          labelStyle: GoogleFonts.nunito(fontWeight: FontWeight.bold),
+          unselectedLabelStyle: GoogleFonts.nunito(fontWeight: FontWeight.w500),
           tabs: const [
             Tab(text: 'ภาพรวม'),
             Tab(text: 'ผู้เล่น'),
@@ -176,16 +349,25 @@ class _StatsScreenState extends State<StatsScreen>
           ],
         ),
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : TabBarView(
-              controller: _tabController,
-              children: [
-                _buildOverviewTab(),
-                _buildPlayersTab(),
-                _buildHistoryTab(),
-              ],
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFFFF8F0), Color(0xFFFFF0F5), Color(0xFFFFF8F0)],
+          ),
+        ),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildOverviewTab(),
+                  _buildPlayersTab(),
+                  _buildHistoryTab(),
+                ],
+              ),
+      ),
     );
   }
 
@@ -198,24 +380,48 @@ class _StatsScreenState extends State<StatsScreen>
           // สถิติรวม
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFF2C3E50), Color(0xFF3498DB)],
+                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
             child: Column(
               children: [
-                Text(
-                  '📈 สถิติรวม',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.analytics,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'สถิติรวม',
+                      style: GoogleFonts.nunito(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -243,13 +449,30 @@ class _StatsScreenState extends State<StatsScreen>
 
           // ผู้เล่นยอดเยี่ยม
           if (_playerStats.isNotEmpty) ...[
-            Text(
-              '🏆 ผู้เล่นยอดเยี่ยม',
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF2C3E50),
-              ),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFD93D),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.emoji_events,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'ผู้เล่นยอดเยี่ยม',
+                  style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF8B5A96),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 12),
             ..._playerStats.take(3).map((stats) => _buildTopPlayerCard(stats)),
@@ -259,13 +482,30 @@ class _StatsScreenState extends State<StatsScreen>
 
           // สถิติเร็วที่สุด
           if (_playerStats.isNotEmpty) ...[
-            Text(
-              '⚡ เวลาดีที่สุด',
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF2C3E50),
-              ),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF6C5CE7),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.flash_on,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'เวลาดีที่สุด',
+                  style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF8B5A96),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 12),
             ...(_playerStats
@@ -286,17 +526,25 @@ class _StatsScreenState extends State<StatsScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.people_outline,
-              size: 64,
-              color: const Color(0xFF7F8C8D),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF8F0),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Icon(
+                Icons.people_outline,
+                size: 64,
+                color: Color(0xFFB8A9C9),
+              ),
             ),
             const SizedBox(height: 16),
             Text(
               'ยังไม่มีสถิติผู้เล่น',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.nunito(
                 fontSize: 18,
-                color: const Color(0xFF2C3E50),
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF8B5A96),
               ),
             ),
           ],
@@ -320,13 +568,25 @@ class _StatsScreenState extends State<StatsScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.history, size: 64, color: const Color(0xFF7F8C8D)),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF8F0),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Icon(
+                Icons.history,
+                size: 64,
+                color: Color(0xFFB8A9C9),
+              ),
+            ),
             const SizedBox(height: 16),
             Text(
               'ยังไม่มีประวัติเกม',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.nunito(
                 fontSize: 18,
-                color: const Color(0xFF2C3E50),
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF8B5A96),
               ),
             ),
           ],
@@ -347,11 +607,18 @@ class _StatsScreenState extends State<StatsScreen>
   Widget _buildStatItem(String label, String value, IconData icon) {
     return Column(
       children: [
-        Icon(icon, color: Colors.white, size: 32),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Icon(icon, color: Colors.white, size: 28),
+        ),
         const SizedBox(height: 8),
         Text(
           value,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.nunito(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -359,7 +626,10 @@ class _StatsScreenState extends State<StatsScreen>
         ),
         Text(
           label,
-          style: GoogleFonts.poppins(fontSize: 12, color: Colors.white70),
+          style: GoogleFonts.nunito(
+            fontSize: 12,
+            color: Colors.white.withOpacity(0.9),
+          ),
         ),
       ],
     );
@@ -368,26 +638,41 @@ class _StatsScreenState extends State<StatsScreen>
   Widget _buildTopPlayerCard(PlayerStats stats) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE9ECEF)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
-              color: const Color(0xFF2C3E50),
-              borderRadius: BorderRadius.circular(24),
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+              ),
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: Center(
               child: Text(
                 '${stats.gamesWon}',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
+                style: GoogleFonts.nunito(
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -401,28 +686,37 @@ class _StatsScreenState extends State<StatsScreen>
               children: [
                 Text(
                   stats.playerName,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.nunito(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF2C3E50),
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF8B5A96),
                   ),
                 ),
                 Text(
                   'ชนะ ${stats.gamesWon} เกม จาก ${stats.totalGames} เกม',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.nunito(
                     fontSize: 14,
-                    color: const Color(0xFF7F8C8D),
+                    color: const Color(0xFFB8A9C9),
                   ),
                 ),
               ],
             ),
           ),
-          Text(
-            '${(stats.winRate * 100).toStringAsFixed(1)}%',
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF27AE60),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF6C5CE7), Color(0xFFA29BFE)],
+              ),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Text(
+              '${(stats.winRate * 100).toStringAsFixed(1)}%',
+              style: GoogleFonts.nunito(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -433,23 +727,38 @@ class _StatsScreenState extends State<StatsScreen>
   Widget _buildFastestTimeCard(PlayerStats stats) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE9ECEF)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
-              color: const Color(0xFF27AE60),
-              borderRadius: BorderRadius.circular(24),
+              gradient: const LinearGradient(
+                colors: [Color(0xFF6C5CE7), Color(0xFFA29BFE)],
+              ),
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF6C5CE7).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: const Center(
-              child: Icon(Icons.timer, color: Colors.white, size: 24),
+              child: Icon(Icons.timer, color: Colors.white, size: 28),
             ),
           ),
           const SizedBox(width: 16),
@@ -459,17 +768,17 @@ class _StatsScreenState extends State<StatsScreen>
               children: [
                 Text(
                   stats.playerName,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.nunito(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF2C3E50),
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF8B5A96),
                   ),
                 ),
                 Text(
                   'เวลาดีที่สุด: ${TimeUtils.formatDuration(stats.fastestTime)}',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.nunito(
                     fontSize: 14,
-                    color: const Color(0xFF7F8C8D),
+                    color: const Color(0xFFB8A9C9),
                   ),
                 ),
               ],
@@ -483,24 +792,40 @@ class _StatsScreenState extends State<StatsScreen>
   Widget _buildPlayerStatsCard(PlayerStats stats) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE9ECEF)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              CircleAvatar(
-                backgroundColor: const Color(0xFF2C3E50),
-                child: Text(
-                  stats.playerName[0].toUpperCase(),
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                  ),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Center(
+                  child: Text(
+                    stats.playerName[0].toUpperCase(),
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
@@ -511,17 +836,17 @@ class _StatsScreenState extends State<StatsScreen>
                   children: [
                     Text(
                       stats.playerName,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.nunito(
                         fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF2C3E50),
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF8B5A96),
                       ),
                     ),
                     Text(
                       'เล่นครั้งล่าสุด: ${TimeUtils.formatDate(stats.lastPlayed)}',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.nunito(
                         fontSize: 12,
-                        color: const Color(0xFF7F8C8D),
+                        color: const Color(0xFFB8A9C9),
                       ),
                     ),
                   ],
@@ -601,63 +926,100 @@ class _StatsScreenState extends State<StatsScreen>
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE9ECEF)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(
-                record.gameMode == GameMode.classic ? Icons.games : Icons.timer,
-                color: const Color(0xFF2C3E50),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                '${record.gameMode == GameMode.classic ? 'คลาสสิค' : 'แข่งเวลา'} - ${record.totalRounds} รอบ',
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF2C3E50),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: record.gameMode == GameMode.classic
+                      ? const Color(0xFFFF6B9D).withOpacity(0.1)
+                      : const Color(0xFF6C5CE7).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  record.gameMode == GameMode.classic
+                      ? Icons.games
+                      : Icons.timer,
+                  color: record.gameMode == GameMode.classic
+                      ? const Color(0xFFFF6B9D)
+                      : const Color(0xFF6C5CE7),
+                  size: 20,
                 ),
               ),
-              const Spacer(),
-              Text(
-                TimeUtils.formatDate(record.playedAt),
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  color: const Color(0xFF7F8C8D),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  '${record.gameMode == GameMode.classic ? 'คลาสสิค' : 'แข่งเวลา'} - ${record.totalRounds} รอบ',
+                  style: GoogleFonts.nunito(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF8B5A96),
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF8F0),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  TimeUtils.formatDate(record.playedAt),
+                  style: GoogleFonts.nunito(
+                    fontSize: 12,
+                    color: const Color(0xFFB8A9C9),
+                  ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            '🏆 ผู้ชนะ: ${winner.playerName}',
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF27AE60),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFFD93D), Color(0xFFFFE5A3)],
+              ),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Text(
+              '🏆 ผู้ชนะ: ${winner.playerName}',
+              style: GoogleFonts.nunito(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
           const SizedBox(height: 8),
           Text(
             '⏱️ เวลาเกม: ${TimeUtils.formatDuration(record.gameDuration)}',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 14,
-              color: const Color(0xFF7F8C8D),
+              color: const Color(0xFFB8A9C9),
             ),
           ),
           const SizedBox(height: 8),
           Text(
             '👥 ผู้เล่น: ${record.playerResults.length} คน',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 14,
-              color: const Color(0xFF7F8C8D),
+              color: const Color(0xFFB8A9C9),
             ),
           ),
         ],
@@ -668,21 +1030,28 @@ class _StatsScreenState extends State<StatsScreen>
   Widget _buildStatColumn(String label, String value, IconData icon) {
     return Column(
       children: [
-        Icon(icon, color: const Color(0xFF2C3E50), size: 20),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFF8F0),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: const Color(0xFF8B5A96), size: 20),
+        ),
         const SizedBox(height: 4),
         Text(
           value,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.nunito(
             fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF2C3E50),
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF8B5A96),
           ),
         ),
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.nunito(
             fontSize: 10,
-            color: const Color(0xFF7F8C8D),
+            color: const Color(0xFFB8A9C9),
           ),
           textAlign: TextAlign.center,
         ),

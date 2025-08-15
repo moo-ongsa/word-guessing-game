@@ -44,31 +44,39 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
           ),
+          backgroundColor: Colors.white,
           title: Row(
             children: [
-              const Icon(
-                Icons.warning_amber_rounded,
-                color: Color(0xFFE74C3C),
-                size: 28,
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF6B9D).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Color(0xFFFF6B9D),
+                  size: 24,
+                ),
               ),
               const SizedBox(width: 12),
               Text(
                 'ยืนยันการออก',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.nunito(
                   fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF2C3E50),
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF8B5A96),
                 ),
               ),
             ],
           ),
           content: Text(
             'คุณต้องการออกจากเกมหรือไม่?\nข้อมูลเกมปัจจุบันจะหายไป',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 16,
-              color: const Color(0xFF7F8C8D),
+              color: const Color(0xFF8B5A96),
             ),
           ),
           actions: [
@@ -78,29 +86,38 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               },
               child: Text(
                 'ยกเลิก',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.nunito(
                   fontSize: 16,
-                  color: const Color(0xFF7F8C8D),
+                  color: const Color(0xFFB8A9C9),
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFE74C3C),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
                 ),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Text(
-                'ออกจากเกม',
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'ออกจากเกม',
+                  style: GoogleFonts.nunito(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -113,41 +130,64 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFFF8F0),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFFFFF8F0),
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Color(0xFF2C3E50),
-            size: 28,
+        leading: Container(
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF8B5A96).withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          onPressed: () {
-            _showExitConfirmationDialog(context);
-          },
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Color(0xFF8B5A96),
+              size: 24,
+            ),
+            onPressed: () {
+              _showExitConfirmationDialog(context);
+            },
+          ),
         ),
         title: Text(
           'เกมทายคำ',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.nunito(
             fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF2C3E50),
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF8B5A96),
           ),
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: Consumer<GameProvider>(
-          builder: (context, gameProvider, child) {
-            final gameState = gameProvider.gameState;
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFFFF8F0), Color(0xFFFFF0F5), Color(0xFFFFF8F0)],
+          ),
+        ),
+        child: SafeArea(
+          child: Consumer<GameProvider>(
+            builder: (context, gameProvider, child) {
+              final gameState = gameProvider.gameState;
 
-            if (gameState.status == GameStatus.finished) {
-              return _buildGameOverScreen(gameProvider);
-            }
+              if (gameState.status == GameStatus.finished) {
+                return _buildGameOverScreen(gameProvider);
+              }
 
-            return _buildGamePlayScreen(gameProvider);
-          },
+              return _buildGamePlayScreen(gameProvider);
+            },
+          ),
         ),
       ),
     );
@@ -182,16 +222,19 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           children: [
             // Header with game info
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: const Color(0xFFF8F9FA),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFE9ECEF)),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
+                    color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
@@ -202,25 +245,26 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     children: [
                       Text(
                         'รอบที่ ${gameState.currentRound}/${gameState.totalRounds}',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.nunito(
                           fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF2C3E50),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
+                          horizontal: 16,
+                          vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF2C3E50),
+                          color: Colors.white.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           'ผู้เล่น ${gameState.players.length} คน',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.nunito(
                             fontSize: 14,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
@@ -231,20 +275,40 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'คนถาม: ${currentAsker.name}',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: const Color(0xFFE67E22),
-                          fontWeight: FontWeight.w600,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFD93D),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Text(
+                          'คนถาม: ${currentAsker.name}',
+                          style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      Text(
-                        'ผู้เล่นปัจจุบัน: ${currentPlayer.name}',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: const Color(0xFF2C3E50),
-                          fontWeight: FontWeight.w600,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Text(
+                          'ผู้เล่นปัจจุบัน: ${currentPlayer.name}',
+                          style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
@@ -269,31 +333,47 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             // Players list
             Container(
               constraints: const BoxConstraints(minHeight: 200, maxHeight: 400),
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: const Color(0xFFF8F9FA),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFE9ECEF)),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
+                    color: const Color(0xFF8B5A96).withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '📊 สถานะผู้เล่น',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF2C3E50),
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFB3D9),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.people,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'สถานะผู้เล่น',
+                        style: GoogleFonts.nunito(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF8B5A96),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   Expanded(
                     child: ListView.builder(
                       itemCount: gameState.players.length,
@@ -314,69 +394,97 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
 
   Widget _buildGameSetup(GameProvider gameProvider, Player currentPlayer) {
     return Container(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF2C3E50), width: 2),
+        gradient: const LinearGradient(
+          colors: [Colors.white, Color(0xFFFFF8F0)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         children: [
-          Icon(
-            Icons.play_circle_outline,
-            size: 64,
-            color: const Color(0xFF2C3E50),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(
+              Icons.play_circle_outline,
+              size: 48,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(height: 20),
           Text(
             'เตรียมเริ่มเกม',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF2C3E50),
+              color: const Color(0xFF8B5A96),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'ตอนนี้เป็นตาของ: ${currentPlayer.name}',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 18,
-              color: const Color(0xFF7F8C8D),
+              color: const Color(0xFFB8A9C9),
             ),
           ),
           const SizedBox(height: 30),
 
           if (!_showWord)
-            ElevatedButton.icon(
-              onPressed: () {
-                setState(() {
-                  _showWord = true;
-                });
-              },
-              icon: const Icon(Icons.visibility),
-              label: Text(
-                '👁️ ดูคำที่ได้',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+            Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF6C5CE7), Color(0xFFA29BFE)],
                 ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF6C5CE7).withOpacity(0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF3498DB),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  setState(() {
+                    _showWord = true;
+                  });
+                },
+                icon: const Icon(Icons.visibility, color: Colors.white),
+                label: Text(
+                  '👁️ ดูคำที่ได้',
+                  style: GoogleFonts.nunito(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
               ),
             )
@@ -391,12 +499,14 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   )
                 else
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFFFF8F0), Colors.white],
+                      ),
+                      borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: const Color(0xFF3498DB),
+                        color: const Color(0xFF6C5CE7),
                         width: 2,
                       ),
                     ),
@@ -404,49 +514,65 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       children: [
                         Text(
                           'คำที่คุณได้คือ:',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.nunito(
                             fontSize: 16,
-                            color: const Color(0xFF7F8C8D),
+                            color: const Color(0xFFB8A9C9),
                           ),
                         ),
                         const SizedBox(height: 12),
                         Text(
                           currentPlayer.targetWord ?? 'ไม่พบคำ',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.nunito(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFF2C3E50),
+                            color: const Color(0xFF8B5A96),
                           ),
                         ).animate().fadeIn().scale(),
                       ],
                     ),
                   ),
                 const SizedBox(height: 20),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      _gameStarted = true;
-                    });
-                    // เริ่มจับเวลาทันทีเมื่อกดปุ่ม
-                    gameProvider.startCurrentPlayerTurn();
-                  },
-                  icon: const Icon(Icons.timer),
-                  label: Text(
-                    '⏰ เริ่มจับเวลา',
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
                     ),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE74C3C),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 32,
-                      vertical: 16,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        _gameStarted = true;
+                      });
+                      // เริ่มจับเวลาทันทีเมื่อกดปุ่ม
+                      gameProvider.startCurrentPlayerTurn();
+                    },
+                    icon: const Icon(Icons.timer, color: Colors.white),
+                    label: Text(
+                      '⏰ เริ่มจับเวลา',
+                      style: GoogleFonts.nunito(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
                   ),
                 ),
@@ -461,79 +587,118 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     final currentTime = player.getCurrentTime();
 
     return Container(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF2C3E50), width: 2),
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFFF8F0), Colors.white],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         children: [
-          Icon(Icons.timer, size: 64, color: const Color(0xFFE74C3C)),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(Icons.timer, size: 48, color: Colors.white),
+          ),
           const SizedBox(height: 20),
           Text(
             'กำลังจับเวลา',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFFE74C3C),
+              color: const Color(0xFF8B5A96),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'คำที่คุณได้: ${player.targetWord}',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 18,
-              color: const Color(0xFF2C3E50),
+              color: const Color(0xFFB8A9C9),
             ),
           ),
           const SizedBox(height: 20),
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFFE74C3C), width: 2),
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
             ),
             child: Text(
               TimeUtils.formatDuration(currentTime),
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.nunito(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFFE74C3C),
+                color: Colors.white,
               ),
             ),
           ).animate().fadeIn().scale(),
           const SizedBox(height: 30),
-          ElevatedButton.icon(
-            onPressed: () {
-              gameProvider.endCurrentPlayerTurn();
-              setState(() {
-                _showWord = false;
-                _gameStarted = false;
-              });
-            },
-            icon: const Icon(Icons.stop),
-            label: Text(
-              'หยุดจับเวลา',
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+          Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
               ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
             ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFE74C3C),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                gameProvider.endCurrentPlayerTurn();
+                setState(() {
+                  _showWord = false;
+                  _gameStarted = false;
+                });
+              },
+              icon: const Icon(Icons.stop, color: Colors.white),
+              label: Text(
+                'หยุดจับเวลา',
+                style: GoogleFonts.nunito(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
           ),
@@ -544,37 +709,53 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
 
   Widget _buildAskerTurn(Player player) {
     return Container(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE67E22), width: 2),
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFFF8F0), Colors.white],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         children: [
-          Icon(Icons.question_answer, size: 64, color: const Color(0xFFE67E22)),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFFD93D), Color(0xFFFFE5A3)],
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(
+              Icons.question_answer,
+              size: 48,
+              color: Colors.white,
+            ),
+          ),
           const SizedBox(height: 20),
           Text(
             'ตาคนถาม',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFFE67E22),
+              color: const Color(0xFF8B5A96),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'คุณเป็นคนถามในรอบนี้',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 18,
-              color: const Color(0xFF7F8C8D),
+              color: const Color(0xFFB8A9C9),
             ),
           ),
           const SizedBox(height: 20),
@@ -586,28 +767,30 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             )
           else
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFE67E22), width: 2),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFFFF8F0), Colors.white],
+                ),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: const Color(0xFFFFD93D), width: 2),
               ),
               child: Column(
                 children: [
                   Text(
                     'คำที่คุณได้:',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.nunito(
                       fontSize: 16,
-                      color: const Color(0xFF7F8C8D),
+                      color: const Color(0xFFB8A9C9),
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     player.targetWord ?? 'ไม่พบคำ',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.nunito(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xFF2C3E50),
+                      color: const Color(0xFF8B5A96),
                     ),
                   ),
                 ],
@@ -620,37 +803,51 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
 
   Widget _buildWaitingTurn(Player player) {
     return Container(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF7F8C8D), width: 2),
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFFF8F0), Colors.white],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         children: [
-          Icon(Icons.hourglass_empty, size: 64, color: const Color(0xFF7F8C8D)),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: const Color(0xFFB8A9C9),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(
+              Icons.hourglass_empty,
+              size: 48,
+              color: Colors.white,
+            ),
+          ),
           const SizedBox(height: 20),
           Text(
             'รอตาของคุณ',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF7F8C8D),
+              color: const Color(0xFF8B5A96),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'กรุณารอให้ถึงตาของคุณ',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.nunito(
               fontSize: 18,
-              color: const Color(0xFF7F8C8D),
+              color: const Color(0xFFB8A9C9),
             ),
           ),
         ],
@@ -667,13 +864,20 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isCurrentTurn
-            ? Colors.white.withOpacity(0.2)
-            : Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: isCurrentTurn
+              ? [
+                  const Color(0xFFFF6B9D).withOpacity(0.1),
+                  const Color(0xFFFFB3D9).withOpacity(0.1),
+                ]
+              : [const Color(0xFFFFF8F0), Colors.white],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
         border: isCurrentTurn
-            ? Border.all(color: Colors.white, width: 2)
-            : null,
+            ? Border.all(color: const Color(0xFFFF6B9D), width: 2)
+            : Border.all(color: const Color(0xFFE8E0F0), width: 1),
       ),
       child: Row(
         children: [
@@ -681,18 +885,31 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: isCurrentTurn
-                  ? Colors.white
-                  : Colors.white.withOpacity(0.2),
+              gradient: isCurrentTurn
+                  ? const LinearGradient(
+                      colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                    )
+                  : const LinearGradient(
+                      colors: [Color(0xFFB8A9C9), Color(0xFFE8E0F0)],
+                    ),
               borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: isCurrentTurn
+                      ? const Color(0xFFFF6B9D).withOpacity(0.3)
+                      : const Color(0xFFB8A9C9).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: Center(
               child: Text(
                 '${index + 1}',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.nunito(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: isCurrentTurn ? const Color(0xFF667eea) : Colors.white,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -706,27 +923,28 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   children: [
                     Text(
                       player.name,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.nunito(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: const Color(0xFF8B5A96),
                       ),
                     ),
                     if (player.isAsker) ...[
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 2,
+                          horizontal: 8,
+                          vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(8),
+                          color: const Color(0xFFFFD93D),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           'คนถาม',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.nunito(
                             fontSize: 10,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
@@ -734,10 +952,17 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     ],
                     if (isCurrentTurn) ...[
                       const SizedBox(width: 8),
-                      const Icon(
-                        Icons.play_arrow,
-                        color: Colors.white,
-                        size: 20,
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFF6B9D),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.play_arrow,
+                          color: Colors.white,
+                          size: 16,
+                        ),
                       ),
                     ],
                   ],
@@ -748,9 +973,9 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     children: [
                       Text(
                         TimeUtils.formatDurationShort(timeUsed),
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.nunito(
                           fontSize: 14,
-                          color: Colors.white70,
+                          color: const Color(0xFFB8A9C9),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -766,14 +991,20 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           ),
           if (isCurrentTurn && !player.isAsker)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(12),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF6C5CE7), Color(0xFFA29BFE)],
+                ),
+                borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
                 'กำลังเล่น',
-                style: GoogleFonts.poppins(fontSize: 12, color: Colors.white),
+                style: GoogleFonts.nunito(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
         ],
@@ -801,7 +1032,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF667eea), Color(0xFF764ba2)],
+          colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
         ),
       ),
       child: SafeArea(
@@ -814,14 +1045,14 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                 padding: const EdgeInsets.all(30),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
                   border: Border.all(color: Colors.white.withOpacity(0.2)),
                 ),
                 child: Column(
                   children: [
                     Text(
                       '🎬 รายการเกมโชว์',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.nunito(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -830,7 +1061,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     const SizedBox(height: 20),
                     Text(
                       'ผลการแข่งขัน',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.nunito(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                         color: Colors.white70,
@@ -847,7 +1078,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   padding: const EdgeInsets.all(30),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(24),
                     border: Border.all(color: Colors.white.withOpacity(0.2)),
                   ),
                   child: Column(
@@ -856,7 +1087,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       if (_currentResultIndex < sortedPlayers.length) ...[
                         Text(
                           'อันดับที่ ${_currentResultIndex + 1}',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.nunito(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -867,7 +1098,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                           padding: const EdgeInsets.all(30),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(24),
                             border: Border.all(
                               color: Colors.white.withOpacity(0.3),
                             ),
@@ -876,7 +1107,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                             children: [
                               Text(
                                 sortedPlayers[_currentResultIndex].name,
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.nunito(
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -887,7 +1118,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                   null) ...[
                                 Text(
                                   'ใช้เวลา:',
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.nunito(
                                     fontSize: 18,
                                     color: Colors.white70,
                                   ),
@@ -898,7 +1129,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                     sortedPlayers[_currentResultIndex]
                                         .timeUsed!,
                                   ),
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.nunito(
                                     fontSize: 48,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -919,7 +1150,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       ] else ...[
                         Text(
                           '🎉 ครบทุกคนแล้ว!',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.nunito(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -928,7 +1159,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                         const SizedBox(height: 20),
                         Text(
                           'กดปุ่มด้านล่างเพื่อดูผลรวม',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.nunito(
                             fontSize: 18,
                             color: Colors.white70,
                           ),
@@ -945,62 +1176,83 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                 children: [
                   if (_currentResultIndex > 0)
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _currentResultIndex--;
-                          });
-                          _resultAnimationController.reset();
-                          _resultAnimationController.forward();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.2),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        child: Text(
-                          '⬅️ คนก่อนหน้า',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _currentResultIndex--;
+                            });
+                            _resultAnimationController.reset();
+                            _resultAnimationController.forward();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            '⬅️ คนก่อนหน้า',
+                            style: GoogleFonts.nunito(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   if (_currentResultIndex > 0) const SizedBox(width: 16),
                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_currentResultIndex < sortedPlayers.length) {
-                          setState(() {
-                            _currentResultIndex++;
-                          });
-                          _resultAnimationController.reset();
-                          _resultAnimationController.forward();
-                        } else {
-                          setState(() {
-                            _showingResults = true;
-                          });
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF667eea),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
-                      child: Text(
-                        _currentResultIndex < sortedPlayers.length
-                            ? 'คนถัดไป ➡️'
-                            : 'ดูผลรวม 📊',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_currentResultIndex < sortedPlayers.length) {
+                            setState(() {
+                              _currentResultIndex++;
+                            });
+                            _resultAnimationController.reset();
+                            _resultAnimationController.forward();
+                          } else {
+                            setState(() {
+                              _showingResults = true;
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: Text(
+                          _currentResultIndex < sortedPlayers.length
+                              ? 'คนถัดไป ➡️'
+                              : 'ดูผลรวม 📊',
+                          style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF8B5A96),
+                          ),
                         ),
                       ),
                     ),
@@ -1023,7 +1275,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF667eea), Color(0xFF764ba2)],
+          colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
         ),
       ),
       child: SafeArea(
@@ -1036,14 +1288,14 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                 padding: const EdgeInsets.all(30),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
                   border: Border.all(color: Colors.white.withOpacity(0.2)),
                 ),
                 child: Column(
                   children: [
                     Text(
                       '🏆 ผลการแข่งขันสุดท้าย',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.nunito(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -1052,7 +1304,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     const SizedBox(height: 20),
                     Text(
                       'เรียงจากเร็วที่สุดไปช้าที่สุด',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.nunito(
                         fontSize: 18,
                         color: Colors.white70,
                       ),
@@ -1068,7 +1320,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.white.withOpacity(0.2)),
                   ),
                   child: ListView.builder(
@@ -1081,12 +1333,25 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                             margin: const EdgeInsets.only(bottom: 12),
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: index == 0
-                                  ? Colors.green.withOpacity(0.3)
-                                  : Colors.white.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
+                              gradient: index == 0
+                                  ? const LinearGradient(
+                                      colors: [
+                                        Color(0xFFFFD93D),
+                                        Color(0xFFFFE5A3),
+                                      ],
+                                    )
+                                  : LinearGradient(
+                                      colors: [
+                                        Colors.white.withOpacity(0.1),
+                                        Colors.white.withOpacity(0.05),
+                                      ],
+                                    ),
+                              borderRadius: BorderRadius.circular(16),
                               border: index == 0
-                                  ? Border.all(color: Colors.green, width: 2)
+                                  ? Border.all(
+                                      color: const Color(0xFFFFD93D),
+                                      width: 2,
+                                    )
                                   : Border.all(
                                       color: Colors.white.withOpacity(0.2),
                                     ),
@@ -1097,15 +1362,36 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                   width: 50,
                                   height: 50,
                                   decoration: BoxDecoration(
-                                    color: index == 0
-                                        ? Colors.green
-                                        : Colors.white.withOpacity(0.2),
+                                    gradient: index == 0
+                                        ? const LinearGradient(
+                                            colors: [
+                                              Color(0xFFFFD93D),
+                                              Color(0xFFFFE5A3),
+                                            ],
+                                          )
+                                        : LinearGradient(
+                                            colors: [
+                                              Colors.white.withOpacity(0.2),
+                                              Colors.white.withOpacity(0.1),
+                                            ],
+                                          ),
                                     borderRadius: BorderRadius.circular(25),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: index == 0
+                                            ? const Color(
+                                                0xFFFFD93D,
+                                              ).withOpacity(0.3)
+                                            : Colors.white.withOpacity(0.2),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
                                   ),
                                   child: Center(
                                     child: Text(
                                       '${index + 1}',
-                                      style: GoogleFonts.poppins(
+                                      style: GoogleFonts.nunito(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: index == 0
@@ -1123,7 +1409,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                     children: [
                                       Text(
                                         player.name,
-                                        style: GoogleFonts.poppins(
+                                        style: GoogleFonts.nunito(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white,
@@ -1137,7 +1423,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                               TimeUtils.formatDurationShort(
                                                 timeUsed,
                                               ),
-                                              style: GoogleFonts.poppins(
+                                              style: GoogleFonts.nunito(
                                                 fontSize: 16,
                                                 color: Colors.white70,
                                               ),
@@ -1156,10 +1442,17 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 if (index == 0)
-                                  const Icon(
-                                    Icons.emoji_events,
-                                    color: Colors.green,
-                                    size: 32,
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFFFD93D),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Icon(
+                                      Icons.emoji_events,
+                                      color: Colors.white,
+                                      size: 24,
+                                    ),
                                   ),
                               ],
                             ),
@@ -1179,49 +1472,63 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              _showingResults = false;
-                              _currentResultIndex = 0;
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          child: Text(
-                            '🔄 ดูใหม่',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _showingResults = false;
+                                _currentResultIndex = 0;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: Text(
+                              '🔄 ดูใหม่',
+                              style: GoogleFonts.nunito(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/stats');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          child: Text(
-                            '📊 สถิติ',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/stats');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: Text(
+                              '📊 สถิติ',
+                              style: GoogleFonts.nunito(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -1229,26 +1536,38 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  SizedBox(
+                  Container(
                     width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
                     child: ElevatedButton(
                       onPressed: () {
                         gameProvider.resetGame();
                         Navigator.pushReplacementNamed(context, '/setup');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF667eea),
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                       child: Text(
                         '🎮 เล่นใหม่',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.nunito(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: const Color(0xFF8B5A96),
                         ),
                       ),
                     ),
