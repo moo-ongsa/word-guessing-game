@@ -14,7 +14,6 @@ class SetupScreen extends StatefulWidget {
 
 class _SetupScreenState extends State<SetupScreen> {
   final TextEditingController _nameController = TextEditingController();
-  int _selectedRounds = 3;
   GameMode _selectedMode = GameMode.classic;
   final StatsService _statsService = StatsService();
   List<String> _savedPlayerNames = [];
@@ -209,58 +208,6 @@ class _SetupScreenState extends State<SetupScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Number of Rounds
-                      Text(
-                        'จำนวนรอบ:',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: const Color(0xFF2C3E50),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      DropdownButtonFormField<int>(
-                        value: _selectedRounds,
-                        dropdownColor: Colors.white,
-                        style: GoogleFonts.poppins(
-                          color: const Color(0xFF2C3E50),
-                        ),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: const Color(0xFFE9ECEF),
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                        ),
-                        items: List.generate(10, (index) => index + 1)
-                            .map(
-                              (rounds) => DropdownMenuItem(
-                                value: rounds,
-                                child: Text(
-                                  '$rounds รอบ',
-                                  style: const TextStyle(
-                                    color: Color(0xFF2C3E50),
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() {
-                              _selectedRounds = value;
-                            });
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 20),
-
                       // Word Category
                       Text(
                         'หมวดหมู่คำ:',
@@ -346,57 +293,6 @@ class _SetupScreenState extends State<SetupScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-
-                      // รายชื่อที่เคยบันทึกไว้ (สำหรับเพิ่มใหม่)
-                      if (_savedPlayerNames.isNotEmpty) ...[
-                        Text(
-                          '📋 ผู้เล่นที่เคยบันทึกไว้ (คลิกเพื่อเพิ่ม):',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xFF2C3E50),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: _savedPlayerNames.map((name) {
-                            final isAlreadyAdded = context
-                                .read<GameProvider>()
-                                .gameState
-                                .players
-                                .any((player) => player.name == name);
-                            return ActionChip(
-                              label: Text(
-                                name,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  color: isAlreadyAdded
-                                      ? const Color(0xFF7F8C8D)
-                                      : const Color(0xFF2C3E50),
-                                ),
-                              ),
-                              onPressed: isAlreadyAdded
-                                  ? null
-                                  : () {
-                                      context.read<GameProvider>().addPlayer(
-                                        name,
-                                      );
-                                    },
-                              backgroundColor: isAlreadyAdded
-                                  ? const Color(0xFFF8F9FA)
-                                  : Colors.white,
-                              side: BorderSide(
-                                color: isAlreadyAdded
-                                    ? const Color(0xFFE9ECEF)
-                                    : const Color(0xFF2C3E50),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        const SizedBox(height: 16),
-                      ],
 
                       Row(
                         children: [
@@ -685,9 +581,6 @@ class _SetupScreenState extends State<SetupScreen> {
                                     Expanded(
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          gameProvider.setTotalRounds(
-                                            _selectedRounds,
-                                          );
                                           gameProvider.setGameMode(
                                             _selectedMode,
                                           );
