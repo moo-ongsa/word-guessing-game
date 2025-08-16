@@ -7,11 +7,11 @@ class GoogleImagesWidget extends StatefulWidget {
   final double width;
 
   const GoogleImagesWidget({
-    Key? key,
+    super.key,
     required this.searchQuery,
     this.height = 300,
     this.width = double.infinity,
-  }) : super(key: key);
+  });
 
   @override
   State<GoogleImagesWidget> createState() => _GoogleImagesWidgetState();
@@ -91,11 +91,11 @@ class SimpleGoogleImageWidget extends StatelessWidget {
   final double width;
 
   const SimpleGoogleImageWidget({
-    Key? key,
+    super.key,
     required this.searchQuery,
     this.height = 200,
     this.width = double.infinity,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

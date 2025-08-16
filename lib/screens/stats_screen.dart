@@ -80,7 +80,7 @@ class _StatsScreenState extends State<StatsScreen>
           Container(
             margin: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: IconButton(
@@ -91,7 +91,7 @@ class _StatsScreenState extends State<StatsScreen>
           Container(
             margin: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: PopupMenuButton<String>(
@@ -110,7 +110,9 @@ class _StatsScreenState extends State<StatsScreen>
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFF6B9D).withOpacity(0.1),
+                              color: const Color(
+                                0xFFFF6B9D,
+                              ).withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Icon(
@@ -195,7 +197,9 @@ class _StatsScreenState extends State<StatsScreen>
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFFD93D).withOpacity(0.1),
+                              color: const Color(
+                                0xFFFFD93D,
+                              ).withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Icon(
@@ -267,15 +271,17 @@ class _StatsScreenState extends State<StatsScreen>
                     // ลบรายชื่อผู้เล่นที่บันทึกไว้
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.remove('saved_players');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'ลบรายชื่อผู้เล่นแล้ว',
-                          style: GoogleFonts.nunito(),
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'ลบรายชื่อผู้เล่นแล้ว',
+                            style: GoogleFonts.nunito(),
+                          ),
+                          backgroundColor: const Color(0xFF6C5CE7),
                         ),
-                        backgroundColor: const Color(0xFF6C5CE7),
-                      ),
-                    );
+                      );
+                    }
                   }
                 }
               },
@@ -287,7 +293,7 @@ class _StatsScreenState extends State<StatsScreen>
                       Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFD93D).withOpacity(0.1),
+                          color: const Color(0xFFFFD93D).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Icon(
@@ -313,7 +319,7 @@ class _StatsScreenState extends State<StatsScreen>
                       Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFF6B9D).withOpacity(0.1),
+                          color: const Color(0xFFFF6B9D).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Icon(
@@ -390,7 +396,7 @@ class _StatsScreenState extends State<StatsScreen>
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                  color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
                   blurRadius: 20,
                   offset: const Offset(0, 8),
                 ),
@@ -403,7 +409,7 @@ class _StatsScreenState extends State<StatsScreen>
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
@@ -610,7 +616,7 @@ class _StatsScreenState extends State<StatsScreen>
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Icon(icon, color: Colors.white, size: 28),
@@ -628,7 +634,7 @@ class _StatsScreenState extends State<StatsScreen>
           label,
           style: GoogleFonts.nunito(
             fontSize: 12,
-            color: Colors.white.withOpacity(0.9),
+            color: Colors.white.withValues(alpha: 0.9),
           ),
         ),
       ],
@@ -644,7 +650,7 @@ class _StatsScreenState extends State<StatsScreen>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            color: const Color(0xFF8B5A96).withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -662,7 +668,7 @@ class _StatsScreenState extends State<StatsScreen>
               borderRadius: BorderRadius.circular(28),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                  color: const Color(0xFFFF6B9D).withValues(alpha: 0.3),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
@@ -733,7 +739,7 @@ class _StatsScreenState extends State<StatsScreen>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            color: const Color(0xFF8B5A96).withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -751,7 +757,7 @@ class _StatsScreenState extends State<StatsScreen>
               borderRadius: BorderRadius.circular(28),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF6C5CE7).withOpacity(0.3),
+                  color: const Color(0xFF6C5CE7).withValues(alpha: 0.3),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
@@ -798,7 +804,7 @@ class _StatsScreenState extends State<StatsScreen>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            color: const Color(0xFF8B5A96).withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -932,7 +938,7 @@ class _StatsScreenState extends State<StatsScreen>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF8B5A96).withOpacity(0.1),
+            color: const Color(0xFF8B5A96).withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -947,8 +953,8 @@ class _StatsScreenState extends State<StatsScreen>
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: record.gameMode == GameMode.classic
-                      ? const Color(0xFFFF6B9D).withOpacity(0.1)
-                      : const Color(0xFF6C5CE7).withOpacity(0.1),
+                      ? const Color(0xFFFF6B9D).withValues(alpha: 0.1)
+                      : const Color(0xFF6C5CE7).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(

@@ -77,7 +77,7 @@ class GameState {
 
     for (final player in players) {
       if (player.timeUsed != null) {
-        if (maxTime == null || player.timeUsed! > maxTime!) {
+        if (maxTime == null || player.timeUsed! > maxTime) {
           maxTime = player.timeUsed;
           slowestPlayer = player;
         }

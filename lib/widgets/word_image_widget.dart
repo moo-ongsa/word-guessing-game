@@ -67,7 +67,7 @@ class _WordImageWidgetState extends State<WordImageWidget> {
         border: Border.all(color: const Color(0xFFE9ECEF), width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -117,7 +117,7 @@ class _WordImageWidgetState extends State<WordImageWidget> {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF3498DB).withOpacity(0.1),
+                        color: const Color(0xFF3498DB).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(

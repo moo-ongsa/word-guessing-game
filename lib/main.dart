@@ -25,12 +25,10 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(
             seedColor: const Color(0xFFE8B4B8), // Soft dusty rose
             brightness: Brightness.light,
-            background: const Color(0xFFFDF6F0), // Warm cream
             surface: const Color(0xFFFDF6F0),
             primary: const Color(0xFFE8B4B8), // Soft dusty rose
             secondary: const Color(0xFFD4A5A5), // Muted rose
             tertiary: const Color(0xFFE6D3A3), // Warm beige
-            onBackground: const Color(0xFF8B7D7B), // Warm gray
             onSurface: const Color(0xFF8B7D7B),
           ),
           useMaterial3: true,
@@ -70,7 +68,7 @@ class MyApp extends StatelessWidget {
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFE8B4B8).withOpacity(0.8),
+              backgroundColor: const Color(0xFFE8B4B8).withValues(alpha: 0.8),
               foregroundColor: const Color(0xFF8B7D7B),
               elevation: 0,
               shadowColor: Colors.transparent,
@@ -82,7 +80,7 @@ class MyApp extends StatelessWidget {
           ),
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
-            fillColor: Colors.white.withOpacity(0.6),
+            fillColor: Colors.white.withValues(alpha: 0.6),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide.none,
@@ -90,7 +88,7 @@ class MyApp extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide(
-                color: const Color(0xFFE8B4B8).withOpacity(0.5),
+                color: const Color(0xFFE8B4B8).withValues(alpha: 0.5),
                 width: 1,
               ),
             ),
@@ -104,7 +102,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           cardTheme: CardThemeData(
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.white.withValues(alpha: 0.7),
             elevation: 0,
             shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(

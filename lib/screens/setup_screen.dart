@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui';
 import '../providers/game_provider.dart';
 import '../models/game_state.dart';
-import '../services/stats_service.dart';
 
 class SetupScreen extends StatefulWidget {
   const SetupScreen({super.key});
@@ -17,8 +16,6 @@ class _SetupScreenState extends State<SetupScreen>
     with TickerProviderStateMixin {
   final TextEditingController _nameController = TextEditingController();
   GameMode _selectedMode = GameMode.classic;
-  final StatsService _statsService = StatsService();
-  List<String> _savedPlayerNames = [];
   late AnimationController _pulseController;
   late AnimationController _glowController;
   late Animation<double> _pulseAnimation;
@@ -27,7 +24,6 @@ class _SetupScreenState extends State<SetupScreen>
   @override
   void initState() {
     super.initState();
-    _loadSavedPlayers();
 
     // Initialize animations
     _pulseController = AnimationController(
@@ -62,23 +58,11 @@ class _SetupScreenState extends State<SetupScreen>
     super.dispose();
   }
 
-  Future<void> _loadSavedPlayers() async {
-    try {
-      final savedNames = await _statsService.getSortedPlayerNames();
-      setState(() {
-        _savedPlayerNames = savedNames;
-      });
-    } catch (e) {
-      // Handle error silently
-    }
-  }
-
   void _addPlayer() {
     if (_nameController.text.trim().isNotEmpty) {
       context.read<GameProvider>().addPlayer(_nameController.text.trim());
       _nameController.clear();
       // รีเฟรชรายชื่อที่บันทึกไว้
-      _loadSavedPlayers();
     }
   }
 
@@ -113,17 +97,17 @@ class _SetupScreenState extends State<SetupScreen>
                             child: Container(
                               padding: const EdgeInsets.all(24),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
+                                color: Colors.white.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(24),
                                 border: Border.all(
-                                  color: Colors.white.withOpacity(0.3),
+                                  color: Colors.white.withValues(alpha: 0.3),
                                   width: 1,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
                                     color: const Color(
                                       0xFFE8B4B8,
-                                    ).withOpacity(0.3),
+                                    ).withValues(alpha: 0.3),
                                     blurRadius: 20,
                                     spreadRadius: 2,
                                   ),
@@ -143,12 +127,12 @@ class _SetupScreenState extends State<SetupScreen>
                                               decoration: BoxDecoration(
                                                 color: const Color(
                                                   0xFFE8B4B8,
-                                                ).withOpacity(0.3),
+                                                ).withValues(alpha: 0.3),
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 border: Border.all(
                                                   color: Colors.white
-                                                      .withOpacity(0.3),
+                                                      .withValues(alpha: 0.3),
                                                 ),
                                               ),
                                               child: const Icon(
@@ -177,7 +161,6 @@ class _SetupScreenState extends State<SetupScreen>
                                               context
                                                   .read<GameProvider>()
                                                   .loadSavedPlayers();
-                                              _loadSavedPlayers();
                                             },
                                             tooltip: 'รีเฟรช',
                                           ),
@@ -204,7 +187,7 @@ class _SetupScreenState extends State<SetupScreen>
                                       fontWeight: FontWeight.w300,
                                       color: const Color(
                                         0xFF8B7D7B,
-                                      ).withOpacity(0.8),
+                                      ).withValues(alpha: 0.8),
                                     ),
                                   ),
                                   const SizedBox(height: 8),
@@ -215,7 +198,7 @@ class _SetupScreenState extends State<SetupScreen>
                                       fontWeight: FontWeight.w300,
                                       color: const Color(
                                         0xFF8B7D7B,
-                                      ).withOpacity(0.7),
+                                      ).withValues(alpha: 0.7),
                                     ),
                                   ),
                                 ],
@@ -236,10 +219,10 @@ class _SetupScreenState extends State<SetupScreen>
                       child: Container(
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.4),
+                            color: Colors.white.withValues(alpha: 0.4),
                             width: 1,
                           ),
                         ),
@@ -253,10 +236,12 @@ class _SetupScreenState extends State<SetupScreen>
                                   decoration: BoxDecoration(
                                     color: const Color(
                                       0xFFE8B4B8,
-                                    ).withOpacity(0.3),
+                                    ).withValues(alpha: 0.3),
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
-                                      color: Colors.white.withOpacity(0.3),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.3,
+                                      ),
                                     ),
                                   ),
                                   child: const Icon(
@@ -290,8 +275,8 @@ class _SetupScreenState extends State<SetupScreen>
                                   ),
                                   child: DropdownButtonFormField<GameMode>(
                                     value: _selectedMode,
-                                    dropdownColor: Colors.white.withOpacity(
-                                      0.9,
+                                    dropdownColor: Colors.white.withValues(
+                                      alpha: 0.9,
                                     ),
                                     style: GoogleFonts.inter(
                                       color: const Color(0xFF8B7D7B),
@@ -299,7 +284,9 @@ class _SetupScreenState extends State<SetupScreen>
                                     ),
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: Colors.white.withOpacity(0.4),
+                                      fillColor: Colors.white.withValues(
+                                        alpha: 0.4,
+                                      ),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(16),
                                         borderSide: BorderSide.none,
@@ -357,8 +344,8 @@ class _SetupScreenState extends State<SetupScreen>
                                       ),
                                       child: DropdownButtonFormField<String>(
                                         value: gameProvider.selectedCategory,
-                                        dropdownColor: Colors.white.withOpacity(
-                                          0.9,
+                                        dropdownColor: Colors.white.withValues(
+                                          alpha: 0.9,
                                         ),
                                         style: GoogleFonts.inter(
                                           color: const Color(0xFF8B7D7B),
@@ -366,8 +353,8 @@ class _SetupScreenState extends State<SetupScreen>
                                         ),
                                         decoration: InputDecoration(
                                           filled: true,
-                                          fillColor: Colors.white.withOpacity(
-                                            0.4,
+                                          fillColor: Colors.white.withValues(
+                                            alpha: 0.4,
                                           ),
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(
@@ -424,10 +411,10 @@ class _SetupScreenState extends State<SetupScreen>
                       child: Container(
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.4),
+                            color: Colors.white.withValues(alpha: 0.4),
                             width: 1,
                           ),
                         ),
@@ -441,10 +428,12 @@ class _SetupScreenState extends State<SetupScreen>
                                   decoration: BoxDecoration(
                                     color: const Color(
                                       0xFFE8B4B8,
-                                    ).withOpacity(0.3),
+                                    ).withValues(alpha: 0.3),
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
-                                      color: Colors.white.withOpacity(0.3),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.3,
+                                      ),
                                     ),
                                   ),
                                   child: const Icon(
@@ -489,8 +478,8 @@ class _SetupScreenState extends State<SetupScreen>
                                             fontWeight: FontWeight.w300,
                                           ),
                                           filled: true,
-                                          fillColor: Colors.white.withOpacity(
-                                            0.4,
+                                          fillColor: Colors.white.withValues(
+                                            alpha: 0.4,
                                           ),
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(
@@ -543,10 +532,10 @@ class _SetupScreenState extends State<SetupScreen>
                           child: Container(
                             padding: const EdgeInsets.all(24),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.3),
+                              color: Colors.white.withValues(alpha: 0.3),
                               borderRadius: BorderRadius.circular(24),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.4),
+                                color: Colors.white.withValues(alpha: 0.4),
                                 width: 1,
                               ),
                             ),
@@ -560,10 +549,12 @@ class _SetupScreenState extends State<SetupScreen>
                                       decoration: BoxDecoration(
                                         color: const Color(
                                           0xFFE8B4B8,
-                                        ).withOpacity(0.3),
+                                        ).withValues(alpha: 0.3),
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: Colors.white.withOpacity(0.3),
+                                          color: Colors.white.withValues(
+                                            alpha: 0.3,
+                                          ),
                                         ),
                                       ),
                                       child: const Icon(
@@ -592,7 +583,7 @@ class _SetupScreenState extends State<SetupScreen>
                                     player,
                                     gameProvider,
                                   );
-                                }).toList(),
+                                }),
                                 const SizedBox(height: 20),
                                 if (players.length >= 2)
                                   _buildGameActionButtons(gameProvider),
@@ -624,9 +615,9 @@ class _SetupScreenState extends State<SetupScreen>
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white.withOpacity(0.3)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
           ),
           child: IconButton(
             onPressed: onPressed,
@@ -666,9 +657,9 @@ class _SetupScreenState extends State<SetupScreen>
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: Container(
           decoration: BoxDecoration(
-            color: const Color(0xFFE8B4B8).withOpacity(0.4),
+            color: const Color(0xFFE8B4B8).withValues(alpha: 0.4),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.3)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
           ),
           child: ElevatedButton(
             onPressed: onPressed,
@@ -695,9 +686,12 @@ class _SetupScreenState extends State<SetupScreen>
         child: Container(
           padding: const EdgeInsets.all(40),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.3),
+            color: Colors.white.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withOpacity(0.4), width: 1),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.4),
+              width: 1,
+            ),
           ),
           child: Column(
             children: [
@@ -708,9 +702,11 @@ class _SetupScreenState extends State<SetupScreen>
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.3),
+                      color: Colors.white.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                      ),
                     ),
                     child: const Icon(
                       Icons.people_outline,
@@ -760,10 +756,13 @@ class _SetupScreenState extends State<SetupScreen>
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: player.isAsker
-                ? const Color(0xFFD4A5A5).withOpacity(0.4)
-                : Colors.white.withOpacity(0.3),
+                ? const Color(0xFFD4A5A5).withValues(alpha: 0.4)
+                : Colors.white.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.4), width: 1),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.4),
+              width: 1,
+            ),
           ),
           child: Row(
             children: [
@@ -776,9 +775,11 @@ class _SetupScreenState extends State<SetupScreen>
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE8B4B8).withOpacity(0.4),
+                      color: const Color(0xFFE8B4B8).withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                      ),
                     ),
                     child: Center(
                       child: Text(
@@ -816,10 +817,10 @@ class _SetupScreenState extends State<SetupScreen>
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFD4A5A5).withOpacity(0.5),
+                        color: const Color(0xFFD4A5A5).withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                         ),
                       ),
                       child: Text(
@@ -870,10 +871,10 @@ class _SetupScreenState extends State<SetupScreen>
         child: Container(
           decoration: BoxDecoration(
             color: isDestructive
-                ? const Color(0xFFE74C3C).withOpacity(0.2)
-                : const Color(0xFFE8B4B8).withOpacity(0.4),
+                ? const Color(0xFFE74C3C).withValues(alpha: 0.2)
+                : const Color(0xFFE8B4B8).withValues(alpha: 0.4),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white.withOpacity(0.3)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
           ),
           child: ElevatedButton(
             onPressed: onPressed,
@@ -886,11 +887,7 @@ class _SetupScreenState extends State<SetupScreen>
               ),
             ),
             child: child is Icon
-                ? Icon(
-                    (child as Icon).icon,
-                    color: const Color(0xFF8B7D7B),
-                    size: 16,
-                  )
+                ? Icon((child).icon, color: const Color(0xFF8B7D7B), size: 16)
                 : child,
           ),
         ),
@@ -908,9 +905,9 @@ class _SetupScreenState extends State<SetupScreen>
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color(0xFFE8B4B8).withOpacity(0.4),
+                color: const Color(0xFFE8B4B8).withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white.withOpacity(0.3)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
               ),
               child: ElevatedButton.icon(
                 onPressed: () {
@@ -948,14 +945,16 @@ class _SetupScreenState extends State<SetupScreen>
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8B4B8).withOpacity(0.5),
+                    color: const Color(0xFFE8B4B8).withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white.withOpacity(0.3)),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.3),
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: const Color(
                           0xFFE8B4B8,
-                        ).withOpacity(_glowAnimation.value),
+                        ).withValues(alpha: _glowAnimation.value),
                         blurRadius: 20,
                         spreadRadius: 2,
                       ),

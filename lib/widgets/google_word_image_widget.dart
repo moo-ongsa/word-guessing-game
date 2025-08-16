@@ -75,10 +75,13 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
       height: widget.height ?? 300,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.3),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF8B7D7B).withOpacity(0.1),
+            color: const Color(0xFF8B7D7B).withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -103,7 +106,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20),
@@ -117,7 +120,9 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                             Container(
                               padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFE8B4B8).withOpacity(0.3),
+                                color: const Color(
+                                  0xFFE8B4B8,
+                                ).withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Icon(
@@ -152,7 +157,9 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.w300,
-                            color: const Color(0xFF8B7D7B).withOpacity(0.8),
+                            color: const Color(
+                              0xFF8B7D7B,
+                            ).withValues(alpha: 0.8),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -162,10 +169,14 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFE8B4B8).withOpacity(0.2),
+                            color: const Color(
+                              0xFFE8B4B8,
+                            ).withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: const Color(0xFFE8B4B8).withOpacity(0.3),
+                              color: const Color(
+                                0xFFE8B4B8,
+                              ).withValues(alpha: 0.3),
                             ),
                           ),
                           child: Text(
@@ -198,7 +209,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
-            color: Colors.white.withOpacity(0.3),
+            color: Colors.white.withValues(alpha: 0.3),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -206,7 +217,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE8B4B8).withOpacity(0.3),
+                      color: const Color(0xFFE8B4B8).withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: const CircularProgressIndicator(
@@ -241,7 +252,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
-            color: Colors.white.withOpacity(0.3),
+            color: Colors.white.withValues(alpha: 0.3),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -249,7 +260,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE8B4B8).withOpacity(0.3),
+                      color: const Color(0xFFE8B4B8).withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: const Icon(
@@ -274,10 +285,10 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE8B4B8).withOpacity(0.4),
+                          color: const Color(0xFFE8B4B8).withValues(alpha: 0.4),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
+                            color: Colors.white.withValues(alpha: 0.3),
                           ),
                         ),
                         child: ElevatedButton.icon(
@@ -333,7 +344,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
-            color: Colors.white.withOpacity(0.3),
+            color: Colors.white.withValues(alpha: 0.3),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -341,7 +352,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE8B4B8).withOpacity(0.3),
+                      color: const Color(0xFFE8B4B8).withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: const Icon(
@@ -387,7 +398,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
               child: Container(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -395,7 +406,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE8B4B8).withOpacity(0.3),
+                          color: const Color(0xFFE8B4B8).withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: CircularProgressIndicator(
@@ -433,7 +444,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
               child: Container(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -441,7 +452,7 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE8B4B8).withOpacity(0.3),
+                          color: const Color(0xFFE8B4B8).withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: const Icon(
@@ -466,10 +477,12 @@ class _GoogleWordImageWidgetState extends State<GoogleWordImageWidget> {
                           filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: const Color(0xFFE8B4B8).withOpacity(0.4),
+                              color: const Color(
+                                0xFFE8B4B8,
+                              ).withValues(alpha: 0.4),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.3),
+                                color: Colors.white.withValues(alpha: 0.3),
                               ),
                             ),
                             child: ElevatedButton.icon(
