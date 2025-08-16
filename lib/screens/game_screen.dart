@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'dart:ui';
 import '../providers/game_provider.dart';
 import '../models/game_state.dart';
 import '../models/player.dart';
-
 import '../utils/time_utils.dart';
 import '../widgets/google_word_image_widget.dart';
 
@@ -52,31 +52,32 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFF6B9D).withOpacity(0.1),
+                  color: const Color(0xFFE8B4B8).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
                   Icons.warning_amber_rounded,
-                  color: Color(0xFFFF6B9D),
+                  color: Color(0xFFE8B4B8),
                   size: 24,
                 ),
               ),
               const SizedBox(width: 12),
               Text(
                 'ยืนยันการออก',
-                style: GoogleFonts.nunito(
+                style: GoogleFonts.inter(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF8B5A96),
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF8B7D7B),
                 ),
               ),
             ],
           ),
           content: Text(
             'คุณต้องการออกจากเกมหรือไม่?\nข้อมูลเกมปัจจุบันจะหายไป',
-            style: GoogleFonts.nunito(
+            style: GoogleFonts.inter(
               fontSize: 16,
-              color: const Color(0xFF8B5A96),
+              fontWeight: FontWeight.w300,
+              color: const Color(0xFF8B7D7B),
             ),
           ),
           actions: [
@@ -86,37 +87,43 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               },
               child: Text(
                 'ยกเลิก',
-                style: GoogleFonts.nunito(
+                style: GoogleFonts.inter(
                   fontSize: 16,
-                  color: const Color(0xFFB8A9C9),
+                  fontWeight: FontWeight.w300,
+                  color: const Color(0xFFB8A9A7),
                 ),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8B4B8).withOpacity(0.4),
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.white.withOpacity(0.3)),
                   ),
-                ),
-                child: Text(
-                  'ออกจากเกม',
-                  style: GoogleFonts.nunito(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      'ออกจากเกม',
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFF8B7D7B),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -130,40 +137,40 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8F0),
+      backgroundColor: const Color(0xFFFDF6F0),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFFF8F0),
+        backgroundColor: const Color(0xFFFDF6F0),
         elevation: 0,
-        leading: Container(
-          margin: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF8B5A96).withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
+        leading: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.white.withOpacity(0.3)),
               ),
-            ],
-          ),
-          child: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Color(0xFF8B5A96),
-              size: 24,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFF8B7D7B),
+                  size: 24,
+                ),
+                onPressed: () {
+                  _showExitConfirmationDialog(context);
+                },
+              ),
             ),
-            onPressed: () {
-              _showExitConfirmationDialog(context);
-            },
           ),
         ),
         title: Text(
           'เกมทายคำ',
-          style: GoogleFonts.nunito(
+          style: GoogleFonts.inter(
             fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF8B5A96),
+            fontWeight: FontWeight.w400,
+            color: const Color(0xFF8B7D7B),
           ),
         ),
         centerTitle: true,
@@ -173,7 +180,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF8F0), Color(0xFFFFF0F5), Color(0xFFFFF8F0)],
+            colors: [Color(0xFFFDF6F0), Color(0xFFF8F0E8), Color(0xFFFDF6F0)],
           ),
         ),
         child: SafeArea(
@@ -225,14 +232,14 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                  colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                    color: const Color(0xFFE8B4B8).withOpacity(0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -245,7 +252,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     children: [
                       Text(
                         'รอบที่ ${gameState.currentRound}/${gameState.totalRounds}',
-                        style: GoogleFonts.nunito(
+                        style: GoogleFonts.inter(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -262,7 +269,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                         ),
                         child: Text(
                           'ผู้เล่น ${gameState.players.length} คน',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -281,12 +288,12 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFD93D),
+                          color: const Color(0xFFE8B4B8),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Text(
                           'คนถาม: ${currentAsker.name}',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -304,7 +311,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                         ),
                         child: Text(
                           'ผู้เล่นปัจจุบัน: ${currentPlayer.name}',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -353,7 +360,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFB3D9),
+                          color: const Color(0xFFE8B4B8),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(
@@ -365,10 +372,10 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       const SizedBox(width: 12),
                       Text(
                         'สถานะผู้เล่น',
-                        style: GoogleFonts.nunito(
+                        style: GoogleFonts.inter(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF8B5A96),
+                          color: const Color(0xFF8B7D7B),
                         ),
                       ),
                     ],
@@ -397,7 +404,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Colors.white, Color(0xFFFFF8F0)],
+          colors: [Colors.white, Color(0xFFFDF6F0)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -416,7 +423,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
               ),
               borderRadius: BorderRadius.circular(20),
             ),
@@ -429,16 +436,16 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           const SizedBox(height: 20),
           Text(
             'เตรียมเริ่มเกม',
-            style: GoogleFonts.nunito(
+            style: GoogleFonts.inter(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF8B5A96),
+              color: const Color(0xFF8B7D7B),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'ตอนนี้เป็นตาของ: ${currentPlayer.name}',
-            style: GoogleFonts.nunito(
+            style: GoogleFonts.inter(
               fontSize: 18,
               color: const Color(0xFFB8A9C9),
             ),
@@ -469,7 +476,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                 icon: const Icon(Icons.visibility, color: Colors.white),
                 label: Text(
                   '👁️ ดูคำที่ได้',
-                  style: GoogleFonts.nunito(
+                  style: GoogleFonts.inter(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -502,7 +509,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                        colors: [Color(0xFFFFF8F0), Colors.white],
+                        colors: [Color(0xFFFDF6F0), Colors.white],
                       ),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
@@ -514,7 +521,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       children: [
                         Text(
                           'คำที่คุณได้คือ:',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 16,
                             color: const Color(0xFFB8A9C9),
                           ),
@@ -522,10 +529,10 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                         const SizedBox(height: 12),
                         Text(
                           currentPlayer.targetWord ?? 'ไม่พบคำ',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFF8B5A96),
+                            color: const Color(0xFF8B7D7B),
                           ),
                         ).animate().fadeIn().scale(),
                       ],
@@ -535,12 +542,12 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                 Container(
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                      colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
                     ),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                        color: const Color(0xFFE8B4B8).withOpacity(0.3),
                         blurRadius: 12,
                         offset: const Offset(0, 6),
                       ),
@@ -557,7 +564,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     icon: const Icon(Icons.timer, color: Colors.white),
                     label: Text(
                       '⏰ เริ่มจับเวลา',
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -590,7 +597,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFFFF8F0), Colors.white],
+          colors: [Color(0xFFFDF6F0), Colors.white],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -609,7 +616,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
               ),
               borderRadius: BorderRadius.circular(20),
             ),
@@ -618,16 +625,16 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           const SizedBox(height: 20),
           Text(
             'กำลังจับเวลา',
-            style: GoogleFonts.nunito(
+            style: GoogleFonts.inter(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF8B5A96),
+              color: const Color(0xFF8B7D7B),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'คำที่คุณได้: ${player.targetWord}',
-            style: GoogleFonts.nunito(
+            style: GoogleFonts.inter(
               fontSize: 18,
               color: const Color(0xFFB8A9C9),
             ),
@@ -637,12 +644,12 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
               ),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                  color: const Color(0xFFE8B4B8).withOpacity(0.3),
                   blurRadius: 12,
                   offset: const Offset(0, 6),
                 ),
@@ -650,7 +657,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             ),
             child: Text(
               TimeUtils.formatDuration(currentTime),
-              style: GoogleFonts.nunito(
+              style: GoogleFonts.inter(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -661,12 +668,12 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           Container(
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
               ),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFF6B9D).withOpacity(0.3),
+                  color: const Color(0xFFE8B4B8).withOpacity(0.3),
                   blurRadius: 12,
                   offset: const Offset(0, 6),
                 ),
@@ -683,7 +690,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               icon: const Icon(Icons.stop, color: Colors.white),
               label: Text(
                 'หยุดจับเวลา',
-                style: GoogleFonts.nunito(
+                style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -712,7 +719,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFFFF8F0), Colors.white],
+          colors: [Color(0xFFFDF6F0), Colors.white],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -731,7 +738,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFFFFD93D), Color(0xFFFFE5A3)],
+                colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
               ),
               borderRadius: BorderRadius.circular(20),
             ),
@@ -744,16 +751,16 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           const SizedBox(height: 20),
           Text(
             'ตาคนถาม',
-            style: GoogleFonts.nunito(
+            style: GoogleFonts.inter(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF8B5A96),
+              color: const Color(0xFF8B7D7B),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'คุณเป็นคนถามในรอบนี้',
-            style: GoogleFonts.nunito(
+            style: GoogleFonts.inter(
               fontSize: 18,
               color: const Color(0xFFB8A9C9),
             ),
@@ -770,16 +777,16 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFFFFF8F0), Colors.white],
+                  colors: [Color(0xFFFDF6F0), Colors.white],
                 ),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xFFFFD93D), width: 2),
+                border: Border.all(color: const Color(0xFFE8B4B8), width: 2),
               ),
               child: Column(
                 children: [
                   Text(
                     'คำที่คุณได้:',
-                    style: GoogleFonts.nunito(
+                    style: GoogleFonts.inter(
                       fontSize: 16,
                       color: const Color(0xFFB8A9C9),
                     ),
@@ -787,10 +794,10 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   const SizedBox(height: 12),
                   Text(
                     player.targetWord ?? 'ไม่พบคำ',
-                    style: GoogleFonts.nunito(
+                    style: GoogleFonts.inter(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xFF8B5A96),
+                      color: const Color(0xFF8B7D7B),
                     ),
                   ),
                 ],
@@ -806,7 +813,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFFFF8F0), Colors.white],
+          colors: [Color(0xFFFDF6F0), Colors.white],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -836,16 +843,16 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           const SizedBox(height: 20),
           Text(
             'รอตาของคุณ',
-            style: GoogleFonts.nunito(
+            style: GoogleFonts.inter(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF8B5A96),
+              color: const Color(0xFF8B7D7B),
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'กรุณารอให้ถึงตาของคุณ',
-            style: GoogleFonts.nunito(
+            style: GoogleFonts.inter(
               fontSize: 18,
               color: const Color(0xFFB8A9C9),
             ),
@@ -867,16 +874,16 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
         gradient: LinearGradient(
           colors: isCurrentTurn
               ? [
-                  const Color(0xFFFF6B9D).withOpacity(0.1),
-                  const Color(0xFFFFB3D9).withOpacity(0.1),
+                  const Color(0xFFE8B4B8).withOpacity(0.1),
+                  const Color(0xFFF8F0E8).withOpacity(0.1),
                 ]
-              : [const Color(0xFFFFF8F0), Colors.white],
+              : [const Color(0xFFFDF6F0), Colors.white],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
         border: isCurrentTurn
-            ? Border.all(color: const Color(0xFFFF6B9D), width: 2)
+            ? Border.all(color: const Color(0xFFE8B4B8), width: 2)
             : Border.all(color: const Color(0xFFE8E0F0), width: 1),
       ),
       child: Row(
@@ -887,7 +894,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             decoration: BoxDecoration(
               gradient: isCurrentTurn
                   ? const LinearGradient(
-                      colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+                      colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
                     )
                   : const LinearGradient(
                       colors: [Color(0xFFB8A9C9), Color(0xFFE8E0F0)],
@@ -896,7 +903,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               boxShadow: [
                 BoxShadow(
                   color: isCurrentTurn
-                      ? const Color(0xFFFF6B9D).withOpacity(0.3)
+                      ? const Color(0xFFE8B4B8).withOpacity(0.3)
                       : const Color(0xFFB8A9C9).withOpacity(0.3),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
@@ -906,7 +913,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             child: Center(
               child: Text(
                 '${index + 1}',
-                style: GoogleFonts.nunito(
+                style: GoogleFonts.inter(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -923,10 +930,10 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   children: [
                     Text(
                       player.name,
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xFF8B5A96),
+                        color: const Color(0xFF8B7D7B),
                       ),
                     ),
                     if (player.isAsker) ...[
@@ -937,12 +944,12 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFD93D),
+                          color: const Color(0xFFE8B4B8),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           'คนถาม',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -955,7 +962,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFF6B9D),
+                          color: const Color(0xFFE8B4B8),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Icon(
@@ -973,7 +980,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     children: [
                       Text(
                         TimeUtils.formatDurationShort(timeUsed),
-                        style: GoogleFonts.nunito(
+                        style: GoogleFonts.inter(
                           fontSize: 14,
                           color: const Color(0xFFB8A9C9),
                         ),
@@ -1000,7 +1007,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               ),
               child: Text(
                 'กำลังเล่น',
-                style: GoogleFonts.nunito(
+                style: GoogleFonts.inter(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -1032,7 +1039,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+          colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
         ),
       ),
       child: SafeArea(
@@ -1052,7 +1059,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   children: [
                     Text(
                       '🎬 รายการเกมโชว์',
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.inter(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -1061,7 +1068,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     const SizedBox(height: 20),
                     Text(
                       'ผลการแข่งขัน',
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.inter(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                         color: Colors.white70,
@@ -1087,7 +1094,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       if (_currentResultIndex < sortedPlayers.length) ...[
                         Text(
                           'อันดับที่ ${_currentResultIndex + 1}',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -1107,7 +1114,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                             children: [
                               Text(
                                 sortedPlayers[_currentResultIndex].name,
-                                style: GoogleFonts.nunito(
+                                style: GoogleFonts.inter(
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -1118,7 +1125,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                   null) ...[
                                 Text(
                                   'ใช้เวลา:',
-                                  style: GoogleFonts.nunito(
+                                  style: GoogleFonts.inter(
                                     fontSize: 18,
                                     color: Colors.white70,
                                   ),
@@ -1129,7 +1136,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                     sortedPlayers[_currentResultIndex]
                                         .timeUsed!,
                                   ),
-                                  style: GoogleFonts.nunito(
+                                  style: GoogleFonts.inter(
                                     fontSize: 48,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -1150,7 +1157,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       ] else ...[
                         Text(
                           '🎉 ครบทุกคนแล้ว!',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -1159,7 +1166,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                         const SizedBox(height: 20),
                         Text(
                           'กดปุ่มด้านล่างเพื่อดูผลรวม',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 18,
                             color: Colors.white70,
                           ),
@@ -1199,7 +1206,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                           ),
                           child: Text(
                             '⬅️ คนก่อนหน้า',
-                            style: GoogleFonts.nunito(
+                            style: GoogleFonts.inter(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -1248,10 +1255,10 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                           _currentResultIndex < sortedPlayers.length
                               ? 'คนถัดไป ➡️'
                               : 'ดูผลรวม 📊',
-                          style: GoogleFonts.nunito(
+                          style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFF8B5A96),
+                            color: const Color(0xFF8B7D7B),
                           ),
                         ),
                       ),
@@ -1275,7 +1282,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFFFF6B9D), Color(0xFFFFB3D9)],
+          colors: [Color(0xFFE8B4B8), Color(0xFFF8F0E8)],
         ),
       ),
       child: SafeArea(
@@ -1295,7 +1302,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                   children: [
                     Text(
                       '🏆 ผลการแข่งขันสุดท้าย',
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.inter(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -1304,7 +1311,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     const SizedBox(height: 20),
                     Text(
                       'เรียงจากเร็วที่สุดไปช้าที่สุด',
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.inter(
                         fontSize: 18,
                         color: Colors.white70,
                       ),
@@ -1336,8 +1343,8 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                               gradient: index == 0
                                   ? const LinearGradient(
                                       colors: [
-                                        Color(0xFFFFD93D),
-                                        Color(0xFFFFE5A3),
+                                        Color(0xFFE8B4B8),
+                                        Color(0xFFF8F0E8),
                                       ],
                                     )
                                   : LinearGradient(
@@ -1349,7 +1356,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                               borderRadius: BorderRadius.circular(16),
                               border: index == 0
                                   ? Border.all(
-                                      color: const Color(0xFFFFD93D),
+                                      color: const Color(0xFFE8B4B8),
                                       width: 2,
                                     )
                                   : Border.all(
@@ -1365,8 +1372,8 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                     gradient: index == 0
                                         ? const LinearGradient(
                                             colors: [
-                                              Color(0xFFFFD93D),
-                                              Color(0xFFFFE5A3),
+                                              Color(0xFFE8B4B8),
+                                              Color(0xFFF8F0E8),
                                             ],
                                           )
                                         : LinearGradient(
@@ -1391,7 +1398,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                   child: Center(
                                     child: Text(
                                       '${index + 1}',
-                                      style: GoogleFonts.nunito(
+                                      style: GoogleFonts.inter(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: index == 0
@@ -1409,7 +1416,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                     children: [
                                       Text(
                                         player.name,
-                                        style: GoogleFonts.nunito(
+                                        style: GoogleFonts.inter(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white,
@@ -1423,7 +1430,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                               TimeUtils.formatDurationShort(
                                                 timeUsed,
                                               ),
-                                              style: GoogleFonts.nunito(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 16,
                                                 color: Colors.white70,
                                               ),
@@ -1445,7 +1452,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                   Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFFFD93D),
+                                      color: const Color(0xFFE8B4B8),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: const Icon(
@@ -1494,7 +1501,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                             ),
                             child: Text(
                               '🔄 ดูใหม่',
-                              style: GoogleFonts.nunito(
+                              style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -1524,7 +1531,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                             ),
                             child: Text(
                               '📊 สถิติ',
-                              style: GoogleFonts.nunito(
+                              style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -1564,10 +1571,10 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       ),
                       child: Text(
                         '🎮 เล่นใหม่',
-                        style: GoogleFonts.nunito(
+                        style: GoogleFonts.inter(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF8B5A96),
+                          color: const Color(0xFF8B7D7B),
                         ),
                       ),
                     ),

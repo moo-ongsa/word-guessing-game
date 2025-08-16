@@ -20,7 +20,7 @@ class GameState {
     this.mode = GameMode.classic,
     this.currentPlayerIndex = 0,
     this.currentRound = 1,
-    this.totalRounds = 3,
+    this.totalRounds = 1,
     this.gameStartTime,
     this.wordList = const [],
   });
